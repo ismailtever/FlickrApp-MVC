@@ -99,13 +99,9 @@
 		D9A1F06829DF14D8003D88C6 /* FlickrApp */ = {
 			isa = PBXGroup;
 			children = (
-				D9A1F06929DF14D8003D88C6 /* AppDelegate.swift */,
-				D9A1F06B29DF14D8003D88C6 /* SceneDelegate.swift */,
-				D9A1F06D29DF14D8003D88C6 /* ViewController.swift */,
-				D9A1F06F29DF14D8003D88C6 /* Main.storyboard */,
-				D9A1F07229DF14DD003D88C6 /* Assets.xcassets */,
-				D9A1F07429DF14DD003D88C6 /* LaunchScreen.storyboard */,
-				D9A1F07729DF14DD003D88C6 /* Info.plist */,
+				D9A1F09B29DF170B003D88C6 /* Support */,
+				D9A1F09A29DF1708003D88C6 /* Screens */,
+				D9A1F09929DF1704003D88C6 /* App */,
 			);
 			path = FlickrApp;
 			sourceTree = "<group>";
@@ -125,6 +121,42 @@
 				D9A1F08C29DF14DE003D88C6 /* FlickrAppUITestsLaunchTests.swift */,
 			);
 			path = FlickrAppUITests;
+			sourceTree = "<group>";
+		};
+		D9A1F09929DF1704003D88C6 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				D9A1F06929DF14D8003D88C6 /* AppDelegate.swift */,
+				D9A1F06B29DF14D8003D88C6 /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		D9A1F09A29DF1708003D88C6 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D9A1F09C29E0535D003D88C6 /* RecentPhotos */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		D9A1F09B29DF170B003D88C6 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				D9A1F07229DF14DD003D88C6 /* Assets.xcassets */,
+				D9A1F07729DF14DD003D88C6 /* Info.plist */,
+				D9A1F07429DF14DD003D88C6 /* LaunchScreen.storyboard */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		D9A1F09C29E0535D003D88C6 /* RecentPhotos */ = {
+			isa = PBXGroup;
+			children = (
+				D9A1F06D29DF14D8003D88C6 /* ViewController.swift */,
+				D9A1F06F29DF14D8003D88C6 /* Main.storyboard */,
+			);
+			path = RecentPhotos;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -439,12 +471,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G639H868D6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlickrApp/Info.plist;
+				INFOPLIST_FILE = FlickrApp/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -452,9 +485,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ismailtever.FlickrApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -467,12 +503,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = G639H868D6;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlickrApp/Info.plist;
+				INFOPLIST_FILE = FlickrApp/Support/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,9 +517,12 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ismailtever.FlickrApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
