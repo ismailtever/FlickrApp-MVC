@@ -1,3 +1,5 @@
+import Foundation
+
 struct Photo: Codable {
     let id, owner, secret, server: String?
     let farm: Int?
@@ -10,7 +12,7 @@ struct Photo: Codable {
     let heightN, widthN: Int?
     let urlZ: String?
     let heightZ, widthZ: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case id, owner, secret, server, farm, title, ispublic, isfriend, isfamily, description, ownername, iconserver, iconfarm
         case urlN = "url_n"
@@ -25,8 +27,27 @@ struct Photo: Codable {
 // MARK: - Description
 struct Description: Codable {
     let content: String
-
+    
     enum CodingKeys: String, CodingKey {
         case content = "_content"
     }
 }
+
+// MARK: - URL BuddyIcon
+extension Photo {
+    var buddyIconURL: String {
+        
+        if let iconServer = iconserver,
+           let iconFarm = iconfarm,
+           let nsId = owner,
+           NSString(string: iconServer).intValue > 0 {
+            return "http://farm\(iconFarm).staticflickr.com/\(iconServer)/buddyicons/\(nsId).jpg"
+        }else {
+            return "https://www.flickr.com/images/buddyicon.gif"
+        }
+    }
+}
+
+
+
+
