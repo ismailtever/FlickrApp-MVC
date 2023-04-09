@@ -11,9 +11,13 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
     
     private var photosResponse: PhotosResponse? {
         didSet { // responsea bir atama olduğunda tableViewı reload et.
-            tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
+    private var selectedPhoto: Photo?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,22 +25,45 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
         fetchRecentPhotos()
     }
     
-    
+
     private func fetchRecentPhotos() {
-        guard let url = URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=fa08c6c936c3925b19d9f5c6e7781bb0&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o") else {return}
+        guard let url = URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&format=json&nojsoncallback=1&api_key=fa08c6c936c3925b19d9f5c6e7781bb0&extras=description,owner_name,icon_server,url_n,url_z") else {return}
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print(error)
+                debugPrint(error)
                 return
             }
-            if let data = data, let photosResponse = try? JSONDecoder().decode(PhotosResponse.self, from: data) {
-                self.photosResponse = photosResponse
+            if let data = data {
+                do {
+                    let photosResponse = try JSONDecoder().decode(PhotosResponse.self, from: data)
+                        self.photosResponse = photosResponse
+                }catch{
+                    print(error)
+                    
+                }
             }
         }.resume()
     }
+    private func fetchImages(with url: String?, completion: @escaping (Data) -> Void) {
+        if let urlString = url, let url = URL(string: urlString) { //N düşük çözünürlüklü olduğunda N yi aldık.
+            let request = URLRequest(url: url)
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    debugPrint(error)
+                    return
+                }
+                if let data = data {
+                    DispatchQueue.main.async {
+//                        cell.photoImageView.image = UIImage(data: data)
+                        completion(data)
+                    }
+                }
+            }.resume()
+        }
+    }
     private func searchPhotos(with text: String) {
-        guard let url = URL(string: "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=fa08c6c936c3925b19d9f5c6e7781bb0&text=flower&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o") else {return}
+        guard let url = URL(string:                                 "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=fa08c6c936c3925b19d9f5c6e7781bb0&text=\(text)&format=json&nojsoncallback=1&extras=description,owner_name,icon_server,url_n,url_z") else { return }
         let request = URLRequest(url: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -45,6 +72,7 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
             }
             if let data = data, let photosResponse = try? JSONDecoder().decode(PhotosResponse.self, from: data) {
                 self.photosResponse = photosResponse
+                
                 
             }
         }.resume()
@@ -64,20 +92,38 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return photosResponse?.photos?.photo?.count ?? .zero
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let photo = photosResponse?.photos?.photo?[indexPath.row]
+        
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! PhotoTableViewCell
-        cell.ownerImageView.backgroundColor = .darkGray
-        cell.ownerNameLabel.text = "Owner Name"
-        cell.photoImageView.backgroundColor = .gray
-        cell.titleLabel.text = "Title Label"
+        cell.ownerNameLabel.text = photo?.ownername
+        cell.titleLabel.text = photo?.title
+        
+        fetchImages(with: photo?.urlN) { data in
+            cell.photoImageView.image = UIImage(data: data)
+        }
+        if let iconServer = photo?.iconserver,
+           let iconFarm = photo?.iconfarm,
+           let nsId = photo?.owner,
+           NSString(string: iconServer).intValue > 0 {
+            fetchImages(with: "http://farm\(iconFarm).staticflickr.com/\(iconServer)/buddyicons/\(nsId).jpg") { data in
+                cell.ownerImageView.image = UIImage(data: data)
+            }
+        } else {
+            fetchImages(with: "https://www.flickr.com/images/buddyicon.gif") { data in
+                cell.ownerImageView.image = UIImage(data: data)
+            }
+        }
         return cell
     }
     
     //İndex Pathe göre bir tıklama yapıldığında
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        selectedPhoto = photosResponse?.photos?.photo?[indexPath.row]
         performSegue(withIdentifier: "detailSegue", sender: nil)
     }
     
@@ -88,7 +134,7 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let viewController = segue.destination as? PhotoDetailViewController{
             // TODO: Seçilen fotoğrafı detay ekranına gönder.
-            
+            viewController.photo = selectedPhoto
         }
     }
     
