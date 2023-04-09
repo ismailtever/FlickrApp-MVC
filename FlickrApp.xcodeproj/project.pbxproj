@@ -138,8 +138,7 @@
 		D9A1F09929DF1704003D88C6 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				D9A1F06929DF14D8003D88C6 /* AppDelegate.swift */,
-				D9A1F06B29DF14D8003D88C6 /* SceneDelegate.swift */,
+				D9A1F0B029E313B0003D88C6 /* Delegate */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -223,6 +222,15 @@
 				D9A1F0AE29E1C294003D88C6 /* Photo.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		D9A1F0B029E313B0003D88C6 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				D9A1F06B29DF14D8003D88C6 /* SceneDelegate.swift */,
+				D9A1F06929DF14D8003D88C6 /* AppDelegate.swift */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
