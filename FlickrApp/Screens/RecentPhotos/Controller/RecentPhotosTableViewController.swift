@@ -45,23 +45,7 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
             }
         }.resume()
     }
-    private func fetchImages(with url: String?, completion: @escaping (Data) -> Void) {
-        if let urlString = url, let url = URL(string: urlString) { //N düşük çözünürlüklü olduğunda N yi aldık.
-            let request = URLRequest(url: url)
-            URLSession.shared.dataTask(with: request) { data, response, error in
-                if let error = error {
-                    debugPrint(error)
-                    return
-                }
-                if let data = data {
-                    DispatchQueue.main.async {
-//                        cell.photoImageView.image = UIImage(data: data)
-                        completion(data)
-                    }
-                }
-            }.resume()
-        }
-    }
+    
     private func searchPhotos(with text: String) {
         guard let url = URL(string:                                 "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=fa08c6c936c3925b19d9f5c6e7781bb0&text=\(text)&format=json&nojsoncallback=1&extras=description,owner_name,icon_server,url_n,url_z") else { return }
         let request = URLRequest(url: url)
@@ -103,21 +87,14 @@ class RecentPhotosTableViewController: UITableViewController, UISearchResultsUpd
         cell.ownerNameLabel.text = photo?.ownername
         cell.titleLabel.text = photo?.title
         
-        fetchImages(with: photo?.urlN) { data in
+        NetworkManager.shared.fetchImages(with: photo?.buddyIconURL) { data in
+            cell.ownerImageView.image = UIImage(data: data)
+        }
+        
+        NetworkManager.shared.fetchImages(with: photo?.urlN) { data in
             cell.photoImageView.image = UIImage(data: data)
         }
-        if let iconServer = photo?.iconserver,
-           let iconFarm = photo?.iconfarm,
-           let nsId = photo?.owner,
-           NSString(string: iconServer).intValue > 0 {
-            fetchImages(with: "http://farm\(iconFarm).staticflickr.com/\(iconServer)/buddyicons/\(nsId).jpg") { data in
-                cell.ownerImageView.image = UIImage(data: data)
-            }
-        } else {
-            fetchImages(with: "https://www.flickr.com/images/buddyicon.gif") { data in
-                cell.ownerImageView.image = UIImage(data: data)
-            }
-        }
+        
         return cell
     }
     
